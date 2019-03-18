@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyp.springboot.supermarket.dao.GoodsTypeMapper">
+  <resultMap id="BaseResultMap" type="com.wyp.springboot.supermarket.pojo.GoodsType">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="goods_type_name" jdbcType="CHAR" property="goodsTypeName" />
+    <result column="goods_type_code" jdbcType="CHAR" property="goodsTypeCode" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, goods_type_name,goods_type_code, `state`
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_goods_type
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAllGoodsType" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_goods_type
+  </select>
+  <select id="selectAllEnabledGoodsType" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_goods_type
+    where state = 1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_goods_type
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wyp.springboot.supermarket.pojo.GoodsType">
+    insert into tb_goods_type (id, goods_type_name, `state`
+      )
+    values (#{id,jdbcType=INTEGER}, #{goodsTypeName,jdbcType=CHAR}, #{state,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wyp.springboot.supermarket.pojo.GoodsType">
+    insert into tb_goods_type
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="goodsTypeName != null">
+        goods_type_name,
+      </if>
+      <if test="goodsTypeCode != null">
+        goods_type_code,
+      </if>
+      <if test="state != null">
+        `state`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="goodsTypeName != null">
+        #{goodsTypeName,jdbcType=CHAR},
+      </if>
+      <if test="goodsTypeCode != null">
+        #{goodsTypeCode,jdbcType=CHAR},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wyp.springboot.supermarket.pojo.GoodsType">
+    update tb_goods_type
+    <set>
+      <if test="goodsTypeName != null">
+        goods_type_name = #{goodsTypeName,jdbcType=CHAR},
+      </if>
+      <if test="goodsTypeCode != null">
+        goods_type_code = #{goodsTypeCode,jdbcType=CHAR},
+      </if>
+      <if test="state != null">
+        `state` = #{state,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wyp.springboot.supermarket.pojo.GoodsType">
+    update tb_goods_type
+    set goods_type_name = #{goodsTypeName,jdbcType=CHAR},
+      goods_type_code = #{goodsTypeCode,jdbcType=CHAR},
+      `state` = #{state,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

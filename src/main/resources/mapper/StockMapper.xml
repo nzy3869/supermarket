@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyp.springboot.supermarket.dao.StockMapper">
+  <resultMap id="BaseResultMap" type="com.wyp.springboot.supermarket.pojo.Stock">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="stock_code" jdbcType="CHAR" property="stockCode" />
+    <result column="goods_code" jdbcType="CHAR" property="goodsCode" />
+    <result column="purchase_price" jdbcType="INTEGER" property="purchasePrice" />
+    <result column="stock_num" jdbcType="INTEGER" property="stockNum" />
+    <result column="stock_margin" jdbcType="INTEGER" property="stockMargin" />
+    <result column="supplier_id" jdbcType="INTEGER" property="supplierId" />
+    <result column="create_date" jdbcType="CHAR" property="createDate" />
+    <result column="employee_code" jdbcType="CHAR" property="employeeCode" />
+    <result column="employee_name" jdbcType="CHAR" property="employeeName" />
+    <result column="supplier_name" jdbcType="CHAR" property="supplierName" />
+    <result column="goods_name" jdbcType="CHAR" property="goodsName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    tb_stock.id, stock_code, tb_stock.goods_code, purchase_price, stock_num, stock_margin, supplier_id,
+    create_date, tb_stock.employee_code
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_stock
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAllStock" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    ,tb_goods.goods_name
+    ,supplier_name
+    ,employee_name
+    from tb_stock
+    left join tb_goods on tb_stock.goods_code = tb_goods.goods_code
+    left join tb_supplier on tb_stock.supplier_id = tb_supplier.id
+    left join tb_employee on tb_stock.employee_code = tb_employee.employee_code
+    order by stock_code desc
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_stock
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wyp.springboot.supermarket.pojo.Stock">
+    insert into tb_stock (id, stock_code, goods_code, 
+      purchase_price, stock_num, stock_margin, 
+      supplier_id, create_date, employee_code
+      )
+    values (#{id,jdbcType=INTEGER}, #{stockCode,jdbcType=CHAR}, #{goodsCode,jdbcType=CHAR}, 
+      #{purchasePrice,jdbcType=INTEGER}, #{stockNum,jdbcType=INTEGER}, #{stockMargin,jdbcType=INTEGER}, 
+      #{supplierId,jdbcType=INTEGER}, #{createDate,jdbcType=CHAR}, #{employeeCode,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wyp.springboot.supermarket.pojo.Stock">
+    insert into tb_stock
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="stockCode != null">
+        stock_code,
+      </if>
+      <if test="goodsCode != null">
+        goods_code,
+      </if>
+      <if test="purchasePrice != null">
+        purchase_price,
+      </if>
+      <if test="stockNum != null">
+        stock_num,
+      </if>
+      <if test="stockMargin != null">
+        stock_margin,
+      </if>
+      <if test="supplierId != null">
+        supplier_id,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="employeeCode != null">
+        employee_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="stockCode != null">
+        #{stockCode,jdbcType=CHAR},
+      </if>
+      <if test="goodsCode != null">
+        #{goodsCode,jdbcType=CHAR},
+      </if>
+      <if test="purchasePrice != null">
+        #{purchasePrice,jdbcType=INTEGER},
+      </if>
+      <if test="stockNum != null">
+        #{stockNum,jdbcType=INTEGER},
+      </if>
+      <if test="stockMargin != null">
+        #{stockMargin,jdbcType=INTEGER},
+      </if>
+      <if test="supplierId != null">
+        #{supplierId,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=CHAR},
+      </if>
+      <if test="employeeCode != null">
+        #{employeeCode,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wyp.springboot.supermarket.pojo.Stock">
+    update tb_stock
+    <set>
+      <if test="stockCode != null">
+        stock_code = #{stockCode,jdbcType=CHAR},
+      </if>
+      <if test="goodsCode != null">
+        goods_code = #{goodsCode,jdbcType=CHAR},
+      </if>
+      <if test="purchasePrice != null">
+        purchase_price = #{purchasePrice,jdbcType=INTEGER},
+      </if>
+      <if test="stockNum != null">
+        stock_num = #{stockNum,jdbcType=INTEGER},
+      </if>
+      <if test="stockMargin != null">
+        stock_margin = #{stockMargin,jdbcType=INTEGER},
+      </if>
+      <if test="supplierId != null">
+        supplier_id = #{supplierId,jdbcType=INTEGER},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=CHAR},
+      </if>
+      <if test="employeeCode != null">
+        employee_code = #{employeeCode,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wyp.springboot.supermarket.pojo.Stock">
+    update tb_stock
+    set stock_code = #{stockCode,jdbcType=CHAR},
+      goods_code = #{goodsCode,jdbcType=CHAR},
+      purchase_price = #{purchasePrice,jdbcType=INTEGER},
+      stock_num = #{stockNum,jdbcType=INTEGER},
+      stock_margin = #{stockMargin,jdbcType=INTEGER},
+      supplier_id = #{supplierId,jdbcType=INTEGER},
+      create_date = #{createDate,jdbcType=CHAR},
+      employee_code = #{employeeCode,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

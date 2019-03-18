@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyp.springboot.supermarket.dao.EmployeeMapper">
+  <resultMap id="BaseResultMap" type="com.wyp.springboot.supermarket.pojo.Employee">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="employee_code" jdbcType="CHAR" property="employeeCode" />
+    <result column="employee_name" jdbcType="CHAR" property="employeeName" />
+    <result column="employee_sex" jdbcType="INTEGER" property="employeeSex" />
+    <result column="employee_age" jdbcType="INTEGER" property="employeeAge" />
+    <result column="employee_tel" jdbcType="CHAR" property="employeeTel" />
+    <result column="employee_address" jdbcType="CHAR" property="employeeAddress" />
+    <result column="employee_entry_date" jdbcType="CHAR" property="employeeEntryDate" />
+    <result column="employee_quit_date" jdbcType="CHAR" property="employeeQuitDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, employee_code, employee_name, employee_sex, employee_age, employee_tel, employee_address, 
+    employee_entry_date, employee_quit_date
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_employee
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAllEmployee" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_employee
+  </select>
+  <select id="getEmployeeCount" resultType="int">
+    select
+    count(1)
+    from tb_employee
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_employee
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wyp.springboot.supermarket.pojo.Employee">
+    insert into tb_employee (id, employee_code, employee_name, 
+      employee_sex, employee_age, employee_tel, 
+      employee_address, employee_entry_date, employee_quit_date
+      )
+    values (#{id,jdbcType=INTEGER}, #{employeeCode,jdbcType=CHAR}, #{employeeName,jdbcType=CHAR}, 
+      #{employeeSex,jdbcType=INTEGER}, #{employeeAge,jdbcType=INTEGER}, #{employeeTel,jdbcType=CHAR}, 
+      #{employeeAddress,jdbcType=CHAR}, #{employeeEntryDate,jdbcType=CHAR}, #{employeeQuitDate,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.wyp.springboot.supermarket.pojo.Employee">
+    insert into tb_employee
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="employeeCode != null">
+        employee_code,
+      </if>
+      <if test="employeeName != null">
+        employee_name,
+      </if>
+      <if test="employeeSex != null">
+        employee_sex,
+      </if>
+      <if test="employeeAge != null">
+        employee_age,
+      </if>
+      <if test="employeeTel != null">
+        employee_tel,
+      </if>
+      <if test="employeeAddress != null">
+        employee_address,
+      </if>
+      <if test="employeeEntryDate != null">
+        employee_entry_date,
+      </if>
+      <if test="employeeQuitDate != null">
+        employee_quit_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="employeeCode != null">
+        #{employeeCode,jdbcType=CHAR},
+      </if>
+      <if test="employeeName != null">
+        #{employeeName,jdbcType=CHAR},
+      </if>
+      <if test="employeeSex != null">
+        #{employeeSex,jdbcType=INTEGER},
+      </if>
+      <if test="employeeAge != null">
+        #{employeeAge,jdbcType=INTEGER},
+      </if>
+      <if test="employeeTel != null">
+        #{employeeTel,jdbcType=CHAR},
+      </if>
+      <if test="employeeAddress != null">
+        #{employeeAddress,jdbcType=CHAR},
+      </if>
+      <if test="employeeEntryDate != null">
+        #{employeeEntryDate,jdbcType=CHAR},
+      </if>
+      <if test="employeeQuitDate != null">
+        #{employeeQuitDate,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wyp.springboot.supermarket.pojo.Employee">
+    update tb_employee
+    <set>
+      <if test="employeeCode != null">
+        employee_code = #{employeeCode,jdbcType=CHAR},
+      </if>
+      <if test="employeeName != null">
+        employee_name = #{employeeName,jdbcType=CHAR},
+      </if>
+      <if test="employeeSex != null">
+        employee_sex = #{employeeSex,jdbcType=INTEGER},
+      </if>
+      <if test="employeeAge != null">
+        employee_age = #{employeeAge,jdbcType=INTEGER},
+      </if>
+      <if test="employeeTel != null">
+        employee_tel = #{employeeTel,jdbcType=CHAR},
+      </if>
+      <if test="employeeAddress != null">
+        employee_address = #{employeeAddress,jdbcType=CHAR},
+      </if>
+      <if test="employeeEntryDate != null">
+        employee_entry_date = #{employeeEntryDate,jdbcType=CHAR},
+      </if>
+      <if test="employeeQuitDate != null">
+        employee_quit_date = #{employeeQuitDate,jdbcType=CHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wyp.springboot.supermarket.pojo.Employee">
+    update tb_employee
+    set employee_code = #{employeeCode,jdbcType=CHAR},
+      employee_name = #{employeeName,jdbcType=CHAR},
+      employee_sex = #{employeeSex,jdbcType=INTEGER},
+      employee_age = #{employeeAge,jdbcType=INTEGER},
+      employee_tel = #{employeeTel,jdbcType=CHAR},
+      employee_address = #{employeeAddress,jdbcType=CHAR},
+      employee_entry_date = #{employeeEntryDate,jdbcType=CHAR},
+      employee_quit_date = #{employeeQuitDate,jdbcType=CHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

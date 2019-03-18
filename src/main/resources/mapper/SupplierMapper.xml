@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyp.springboot.supermarket.dao.SupplierMapper">
+  <resultMap id="BaseResultMap" type="com.wyp.springboot.supermarket.pojo.Supplier">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="supplier_name" jdbcType="CHAR" property="supplierName" />
+    <result column="supplier_address" jdbcType="CHAR" property="supplierAddress" />
+    <result column="supplier_person" jdbcType="CHAR" property="supplierPerson" />
+    <result column="supplier_tel" jdbcType="CHAR" property="supplierTel" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, supplier_name, supplier_address, supplier_person, supplier_tel,state
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_supplier
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAllSupplier" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_supplier
+  </select>
+  <select id="selectAllEnabledSupplier" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_supplier
+    where state = 1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_supplier
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.wyp.springboot.supermarket.pojo.Supplier">
+    insert into tb_supplier (id, supplier_name, supplier_address, 
+      supplier_person, supplier_tel,state)
+    values (#{id,jdbcType=INTEGER}, #{supplierName,jdbcType=CHAR}, #{supplierAddress,jdbcType=CHAR}, 
+      #{supplierPerson,jdbcType=CHAR}, #{supplierTel,jdbcType=CHAR},#{state,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.wyp.springboot.supermarket.pojo.Supplier">
+    insert into tb_supplier
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="supplierName != null">
+        supplier_name,
+      </if>
+      <if test="supplierAddress != null">
+        supplier_address,
+      </if>
+      <if test="supplierPerson != null">
+        supplier_person,
+      </if>
+      <if test="supplierTel != null">
+        supplier_tel,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="supplierName != null">
+        #{supplierName,jdbcType=CHAR},
+      </if>
+      <if test="supplierAddress != null">
+        #{supplierAddress,jdbcType=CHAR},
+      </if>
+      <if test="supplierPerson != null">
+        #{supplierPerson,jdbcType=CHAR},
+      </if>
+      <if test="supplierTel != null">
+        #{supplierTel,jdbcType=CHAR},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wyp.springboot.supermarket.pojo.Supplier">
+    update tb_supplier
+    <set>
+      <if test="supplierName != null">
+        supplier_name = #{supplierName,jdbcType=CHAR},
+      </if>
+      <if test="supplierAddress != null">
+        supplier_address = #{supplierAddress,jdbcType=CHAR},
+      </if>
+      <if test="supplierPerson != null">
+        supplier_person = #{supplierPerson,jdbcType=CHAR},
+      </if>
+      <if test="supplierTel != null">
+        supplier_tel = #{supplierTel,jdbcType=CHAR},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wyp.springboot.supermarket.pojo.Supplier">
+    update tb_supplier
+    set supplier_name = #{supplierName,jdbcType=CHAR},
+      supplier_address = #{supplierAddress,jdbcType=CHAR},
+      supplier_person = #{supplierPerson,jdbcType=CHAR},
+      supplier_tel = #{supplierTel,jdbcType=CHAR}
+      state = #{state,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

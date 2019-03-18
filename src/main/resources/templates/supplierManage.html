@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-cn"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>供货商信息管理</title>
+    <div th:include="common/link"></div>
+</head>
+<body>
+<!-- 表格 -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <table id="supplierTable"></table>
+        </div>
+    </div>
+</div>
+<!-- 工具栏 -->
+<div id="toolbar">
+    <div class="btn-group">
+        <button class="btn btn-default" data-toggle='modal' data-target='#addModal' onclick="clearAddModel()">
+            <i class="glyphicon glyphicon-plus"></i>
+        </button>
+        <button class="btn btn-default">
+            <i class="glyphicon glyphicon-trash"></i>
+        </button>
+    </div>
+</div>
+<!-- 添加模态框 -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="addModalLabel">>> 添加供货商信息 <<</h4>
+            </div>
+            <div class="modal-body">
+                <!--添加商品信息表单体-->
+                <div class="panel-body">
+
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="lnr lnr-user"></i></span>
+                        <input class="form-control" id="addSupplierName" placeholder="供货商名称" type="text"
+                               name="supplierName">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="lnr lnr-user"></i></span>
+                        <input class="form-control" id="addSupplierAddress" placeholder="供货商地址" type="text"
+                               name="supplierAddress">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="lnr lnr-user"></i></span>
+                        <input class="form-control" id="addSupplierPerson" placeholder="供货商联系人" type="text"
+                               name="supplierPerson">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="lnr lnr-user"></i></span>
+                        <input class="form-control" id="addSupplierTel" placeholder="供货商电话" type="text"
+                               name="supplierTel">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="lnr lnr-pencil"></i></span>
+                        <select id="addSupplierState" class="form-control">
+                            <option value="1">合作中</option>
+                            <option value="0">未合作</option>
+                        </select>
+                    </div>
+                    <br>
+
+                </div>
+                <!--    修改信息表单体 END -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button id="addSupplierBtn" type="button" class="btn btn-primary">添加</button>
+            </div>
+        </div><!-- /.modal-content -->
+
+    </div><!-- /.modal -->
+</div>
+<!-- 编辑模态框 -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="updateModalLabel">>> 编辑供货商信息 <<</h4>
+            </div>
+            <div class="modal-body">
+                <!--修改信息表单体-->
+                <div class="panel-body">
+                    <input class="form-control" id="updateSupplierId" placeholder="供货商id" type="hidden"
+                           name="supplierId">
+
+                    <br/>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="lnr lnr-user"></i></span>
+                        <input class="form-control" id="updateSupplierName" placeholder="供货商名称" type="text"
+                               name="supplierName">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="lnr lnr-user"></i></span>
+                        <input class="form-control" id="updateSupplierAddress" placeholder="供货商地址" type="text"
+                               name="supplierAddress">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="lnr lnr-user"></i></span>
+                        <input class="form-control" id="updateSupplierPerson" placeholder="供货商联系人" type="text"
+                                name="supplierPerson"/>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="lnr lnr-user"></i></span>
+                        <input class="form-control" id="updateSupplierTel" placeholder="供货商电话" type="text"
+                               name="supplierTel">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="lnr lnr-pencil"></i></span>
+                        <select id="updateSupplierState" class="form-control">
+                            <option value="1">合作中</option>
+                            <option value="0">未合作</option>
+                        </select>
+                    </div>
+                    <br/>
+
+                </div>
+                <!--    修改信息表单体 END -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" id="updateSupplierBtn" data-target="#cfmModel" data-toggle="modal"
+                        class="btn btn-primary">
+                    提交修改
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+
+    </div><!-- /.modal -->
+</div>
+<!-- 确认模态框 -->
+<div class="modal fade" id="cfmModel">
+    <div class="modal-dialog">
+        <div class="modal-content message_align">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+                <h4 class="modal-title">提示信息</h4>
+            </div>
+            <div class="modal-body">
+                <p>您确认要修改吗？</p>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="url"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button onclick="submitUpdateEmployee()" class="btn btn-primary" data-dismiss="modal">确定</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+<script>
+    /**
+     * 表格初始化
+     */
+    $(function () {
+        $('#supplierTable').bootstrapTable({
+            url: '/supplier/getAllSupplier',         //请求后台的URL（*）
+            method: 'post',                      //请求方式（*）
+            toolbar: '#toolbar',                //工具按钮用哪个容器
+            toolbarAlign: 'left',
+            //buttonsToolbar:'#toolbar',        //一个jQuery 选择器，指明自定义的 buttons toolbar。
+            striped: true,                      //是否显示行间隔色
+            cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: true,                   //是否显示分页（*）
+            sortable: false,                     //是否启用排序
+            sortOrder: "desc",                   //排序方式
+            queryParams: {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                limit: this.pageSize,   //页面大小
+                offset: this.pageNumber,  //页码
+                search: this.search
+            },//传递参数（*）
+            sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1,                       //初始化加载第一页，默认第一页
+            pageSize: 8,                       //每页的记录行数（*）
+            //sortClass:"role.id",                     //定义排序列，通过url方式获取数据填写字段名，否则填写下标。
+            pageList: [8, 10],        //可供选择的每页的行数（*）
+            search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+            searchOnEnterKey: false,              //设置为 true时，按回车触发搜索方法，否则自动触发搜索方法。
+            strictSearch: false,                //设置为 true启用全匹配搜索，否则为模糊搜索。
+            searchText: null,                      //初始化搜索文字。
+            searchAlign: 'left',                 //指定 搜索框 水平方向的位置。'left' 或 'right'。
+            paginationVAlign: 'bottom',          //指定 分页条 在垂直方向的位置。'top'，'bottom' 或 'both'。
+            paginationHAlign: 'right',           //指定 分页条 在水平方向的位置。'left' 或 'right'。
+            trimOnSearch: true,                  //设置为 true 将自动去掉搜索字符的前后空格。
+            showHeader: true,                    //是否显示列头。
+            showColumns: true,                  //是否显示所有的列
+            showRefresh: true,                  //是否显示刷新按钮
+            minimumCountColumns: 0,             //最少允许的列数
+            clickToSelect: true,                //是否启用点击选中行
+            uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+            showToggle: false,                    //是否显示详细视图和列表视图的切换按钮
+            cardView: false,                    //是否显示详细视图
+            detailView: false,                   //是否显示父子表
+            dataType: 'json',                     //服务器返回的数据类型
+            columns: [{
+                field: 'id',
+                title: 'id',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'supplierName',
+                title: '供货商名称',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'supplierAddress',
+                title: '供货商地址',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'supplierPerson',
+                title: '供货商联系人',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'supplierTel',
+                title: '供货商电话',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'state',
+                title: '合作状态',
+                align: 'center',
+                halign: 'center',
+                formatter: function (value, row, index) {
+                    return (value == 0) ? '<span class=\"label label-danger\">未合作</span>' : '<span class=\"label label-success\">合作中</span>';
+                }
+            }, {
+                title: '操作',
+                align: 'center',
+                halign: 'center',
+                formatter: function (value, row, index) {
+                    var result = "<button type='button' class='btn btn-warning' data-toggle='modal' data-target='#updateModal' onclick=\"toUpdateBtn(" + JSON.stringify(row).replace(/\"/g, "'") + ")\" >编辑</button>&nbsp&nbsp";
+                    return result;
+                }
+            }]
+
+        });
+    });
+
+    /**
+     * 添加商品信息
+     */
+    $("#addSupplierBtn").click(function () {
+        if ($("#addSupplierName").val() == "" || $("#addSupplierName").val() == null) {
+            toastr.warning("供货商名称不能为空");
+            return;
+        }
+        if ($("#addSupplierAddress").val() == "" || $("#addSupplierAddress").val() == null) {
+            toastr.warning("供货商地址不能为空");
+            return;
+        }
+        if ($("#addSupplierPerson").val() == ""||$("#addSupplierPerson").val()==null) {
+            toastr.warning("供货商联系人不能为空");
+            return;
+        }
+        if ($("#addSupplierTel").val() == "" || $("#addSupplierTel").val() == null) {
+            toastr.warning("供货商电话不能为空");
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/supplier/addSupplier",
+            dataType: "json",
+            data: {
+                supplierName: $("#addSupplierName").val(),
+                supplierAddress: $("#addSupplierAddress").val(),
+                supplierPerson: $("#addSupplierPerson").val(),
+                supplierTel: $("#addSupplierTel").val(),
+                state: $("#addSupplierState").val()
+            },
+            success: function (data) {
+                if (data.result) {
+                    toastr.success(data.msg);
+                    $('#supplierTable').bootstrapTable('refresh', {url: "/supplier/getAllSupplier"});
+                    $('#addModal').modal("hide");
+                } else {
+                    toastr.error(data.msg);
+                }
+            }
+        });
+    });
+
+    /**
+     * 清除添加商品模态框数据
+     */
+    function clearAddModel() {
+        $("#addSupplierName").val("");
+        $("#addSupplierAddress").val("");
+        $("#addSupplierPerson").val("");
+        $("#addSupplierTel").val("");
+    }
+
+
+    /**
+     * 点击编辑按钮
+     * 数据回显
+     */
+    function toUpdateBtn(row) {
+        var rowObj = eval(row);
+        $("#updateSupplierId").val(rowObj.id);
+        $("#updateSupplierName").val(rowObj.supplierName);
+        $("#updateSupplierAddress").val(rowObj.supplierAddress);
+        $("#updateSupplierPerson").val(rowObj.supplierPerson);
+        $("#updateSupplierTel").val(rowObj.supplierTel);
+        $("#updateSupplierState").val(rowObj.state);
+
+    }
+
+
+    /**
+     * 编辑提交
+     */
+    function submitUpdateEmployee() {
+        if ($("#updateSupplierId").val() == "" || $("#updateSupplierId").val() == null) {
+            toastr.warning("供货商id不能为空!");
+            return;
+        }
+        if ($("#updateSupplierName").val() == "" || $("#updateSupplierName").val() == null) {
+            toastr.warning("供货商名称不能为空!");
+            return;
+        }
+        if ($("#updateSupplierAddress").val() == "" || $("#updateSupplierAddress").val() == null) {
+            toastr.warning("供货商地址不能为空!");
+            return;
+        }
+        if ($("#updateSupplierPerson").val() == "" || $("#updateSupplierPerson").val() == null) {
+            toastr.warning("供货商联系人不能为空!");
+            return;
+        }
+        if ($("#updateSupplierTel").val() == "" || $("#updateSupplierTel").val() == null) {
+            toastr.warning("供货商电话不能为空!");
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "/supplier/updateSupplier",
+            data: {
+                id:$("#updateSupplierId").val(),
+                supplierName: $("#updateSupplierName").val(),
+                supplierAddress: $("#updateSupplierAddress").val(),
+                supplierPerson: $("#updateSupplierPerson").val(),
+                supplierTel: $("#updateSupplierTel").val(),
+                state: $("#updateSupplierState").val()
+            },
+            dataType: "json",
+            success: function (data) {
+                if (data.result) {
+                    toastr.success(data.msg)
+                    $('#supplierTable').bootstrapTable('refresh', {url: "/supplier/getAllSupplier"});
+                    $('#updateModal').modal("hide");
+                } else {
+                    toastr.error(data.msg);
+                }
+            }
+        });
+
+    }
+
+</script>
+</body>
+</html>
