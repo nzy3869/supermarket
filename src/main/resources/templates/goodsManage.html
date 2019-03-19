@@ -64,6 +64,20 @@
                     <br/>
                     <div class="input-group">
                         <span class="input-group-addon"><i class="lnr lnr-user"></i></span>
+                        <input class="form-control" id="addsaleDiscountPrice" placeholder="折扣价" type="text"
+                               name="salePrice">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="lnr lnr-pencil"></i></span>
+                        <select id="addDiscountState" class="form-control">
+                            <option value="0">不打折</option>
+                            <option value="1">打折</option>
+                        </select>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="lnr lnr-user"></i></span>
                         <input class="form-control" id="addPicurl" placeholder="图片" type="file"
                                name="picurl">
                     </div>
@@ -127,6 +141,20 @@
                         <span class="input-group-addon"><i class="lnr lnr-user"></i></span>
                         <input class="form-control" id="updateSalePrice" placeholder="商品售价" type="text"
                                name="salePrice">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="lnr lnr-user"></i></span>
+                        <input class="form-control" id="updateSaleDiscountPrice" placeholder="商品折扣价" type="text"
+                               name="saleDiscountPrice">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="lnr lnr-pencil"></i></span>
+                        <select id="updateDiscountState" class="form-control">
+                            <option value="1">打折</option>
+                            <option value="0">不打折</option>
+                        </select>
                     </div>
                     <br/>
                     <div class="input-group">
@@ -242,6 +270,19 @@
                 align: 'center',
                 halign: 'center'
             }, {
+                field: 'saleDiscountPrice',
+                title: '折扣价格',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'discountState',
+                title: '是否打折',
+                align: 'center',
+                halign: 'center',
+                formatter:function (value, row, index) {
+                    return (value == 0) ? '<span class=\"label label-danger\">不打折</span>' : '<span class=\"label label-success\">打折</span>';
+                }
+            }, {
                 field: 'state',
                 title: '启用状态',
                 align: 'center',
@@ -282,6 +323,10 @@
             toastr.warning("商品售价不能为空");
             return;
         }
+        if ($("#addsaleDiscountPrice").val() == "" || $("#addsaleDiscountPrice").val() == null) {
+            toastr.warning("折扣价不能为空");
+            return;
+        }
 
         $.ajax({
             type: "POST",
@@ -292,6 +337,8 @@
                 goodsName: $("#addGoodsName").val(),
                 goodsTypeId: $("#addGoodsTypeId").val(),
                 salePrice: $("#addSalePrice").val(),
+                saleDiscountPrice: $("#addsaleDiscountPrice").val(),
+                discountState: $("#addGoodsState").val(),
                 state: $("#addGoodsState").val()
             },
             success: function (data) {
@@ -313,6 +360,7 @@
         $("#addGoodsCode").val("");
         $("#addGoodsName").val("");
         $("#addSalePrice").val("");
+        $("#addsaleDiscountPrice").val("");
 
         $("#addGoodsTypeId").empty();
         $.ajax({
@@ -370,6 +418,8 @@
         $("#updateGoodsName").val(rowObj.goodsName);
         $("#updateGoodsCode").val(rowObj.goodsCode);
         $("#updateSalePrice").val(rowObj.salePrice);
+        $("#updateSaleDiscountPrice").val(rowObj.saleDiscountPrice);
+        $("#updateDiscountState").val(rowObj.discountState);
         $("#updateGoodsState").val(rowObj.state);
 
     }
@@ -395,6 +445,10 @@
             toastr.warning("商品售价不能为空!");
             return;
         }
+        if ($("#updateSaleDiscountPrice").val() == "" || $("#updateSaleDiscountPrice").val() == null) {
+            toastr.warning("折扣价不能为空!");
+            return;
+        }
 
         $.ajax({
             type: "POST",
@@ -405,6 +459,8 @@
                 goodsName: $("#updateGoodsName").val(),
                 goodsTypeId: $("#updateGoodsTypeId").val(),
                 salePrice: $("#updateSalePrice").val(),
+                saleDiscountPrice: $("#updateSaleDiscountPrice").val(),
+                discountState: $("#updateDiscountState").val(),
                 state: $("#updateGoodsState").val()
             },
             dataType: "json",

@@ -33,7 +33,7 @@ public class Goods implements Serializable {
     /**
      * 售价
      */
-    private Integer salePrice;
+    private Double salePrice;
 
     /**
      * 图片地址
@@ -46,13 +46,15 @@ public class Goods implements Serializable {
     private Integer state;
 
 
-    public String getGoodsCode() {
-        return goodsCode;
-    }
+    /**
+     * 折扣价格
+     */
+    private Double saleDiscountPrice;
 
-    public void setGoodsCode(String goodsCode) {
-        this.goodsCode = goodsCode;
-    }
+    /**
+     * 是否打折 0:不打折 1:打折
+     */
+    private Integer discountState;
 
     private static final long serialVersionUID = 1L;
 

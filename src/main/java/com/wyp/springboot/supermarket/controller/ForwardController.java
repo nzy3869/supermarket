@@ -2,6 +2,7 @@ package com.wyp.springboot.supermarket.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  * 转发页面 控制层
@@ -11,6 +12,14 @@ public class ForwardController {
     @RequestMapping("/admin/domain")
     public String toAdminDomain(){
         return "index";
+    }
+
+    /**
+     * 登录页
+     */
+    @RequestMapping(value = "/login",method = RequestMethod.GET)
+    public String login(){
+        return "login";
     }
 
     /**
@@ -64,6 +73,15 @@ public class ForwardController {
     @RequestMapping("/stockManagePage")
     public String stockManagePage(){
         return "stockManage";
+    }
+
+    /**
+     * 入库管理页
+     * @return
+     */
+    @RequestMapping("/orderManagePage")
+    public String orderManagePage(){
+        return "orderManage";
     }
 
 }

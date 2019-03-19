@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.wyp.springboot.supermarket.pojo.Employee">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="employee_code" jdbcType="CHAR" property="employeeCode" />
+    <result column="employee_password" jdbcType="CHAR" property="employeePassword" />
     <result column="employee_name" jdbcType="CHAR" property="employeeName" />
     <result column="employee_sex" jdbcType="INTEGER" property="employeeSex" />
     <result column="employee_age" jdbcType="INTEGER" property="employeeAge" />
@@ -11,10 +12,11 @@
     <result column="employee_address" jdbcType="CHAR" property="employeeAddress" />
     <result column="employee_entry_date" jdbcType="CHAR" property="employeeEntryDate" />
     <result column="employee_quit_date" jdbcType="CHAR" property="employeeQuitDate" />
+    <result column="employee_type" jdbcType="INTEGER" property="employeeType" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, employee_code, employee_name, employee_sex, employee_age, employee_tel, employee_address, 
-    employee_entry_date, employee_quit_date
+    id, employee_code,employee_password, employee_name, employee_sex, employee_age, employee_tel, employee_address,
+    employee_entry_date, employee_quit_date,employee_type
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -55,6 +57,9 @@
       <if test="employeeCode != null">
         employee_code,
       </if>
+      <if test="employeePassword != null">
+        employee_password,
+      </if>
       <if test="employeeName != null">
         employee_name,
       </if>
@@ -76,6 +81,9 @@
       <if test="employeeQuitDate != null">
         employee_quit_date,
       </if>
+      <if test="employeeType != null">
+        employee_type,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -83,6 +91,9 @@
       </if>
       <if test="employeeCode != null">
         #{employeeCode,jdbcType=CHAR},
+      </if>
+      <if test="employeePassword != null">
+        #{employeePassword,jdbcType=CHAR},
       </if>
       <if test="employeeName != null">
         #{employeeName,jdbcType=CHAR},
@@ -105,6 +116,9 @@
       <if test="employeeQuitDate != null">
         #{employeeQuitDate,jdbcType=CHAR},
       </if>
+      <if test="employeeType != null">
+        #{employeeType,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.wyp.springboot.supermarket.pojo.Employee">
@@ -112,6 +126,9 @@
     <set>
       <if test="employeeCode != null">
         employee_code = #{employeeCode,jdbcType=CHAR},
+      </if>
+      <if test="employeePassword != null">
+        employee_password = #{employeePassword,jdbcType=CHAR},
       </if>
       <if test="employeeName != null">
         employee_name = #{employeeName,jdbcType=CHAR},
@@ -133,6 +150,9 @@
       </if>
       <if test="employeeQuitDate != null">
         employee_quit_date = #{employeeQuitDate,jdbcType=CHAR},
+      </if>
+      <if test="employeeType != null">
+        employee_type = #{employeeType,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

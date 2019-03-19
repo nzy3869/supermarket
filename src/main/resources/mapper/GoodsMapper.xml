@@ -6,13 +6,15 @@
     <result column="goods_code" jdbcType="CHAR" property="goodsCode" />
     <result column="goods_name" jdbcType="CHAR" property="goodsName" />
     <result column="goods_type_id" jdbcType="CHAR" property="goodsTypeId" />
-    <result column="sale_price" jdbcType="INTEGER" property="salePrice" />
+    <result column="sale_price" jdbcType="DOUBLE" property="salePrice" />
     <result column="picUrl" jdbcType="CHAR" property="picurl" />
     <result column="state" jdbcType="INTEGER" property="state" />
     <result column="goods_type_name" jdbcType="CHAR"  property="goodsTypeName" />
+    <result column="sale_discount_price" jdbcType="DOUBLE"  property="saleDiscountPrice" />
+    <result column="discount_state" jdbcType="INTEGER"  property="discountState" />
   </resultMap>
   <sql id="Base_Column_List">
-    tb_goods.id, goods_code,tb_goods.goods_name, tb_goods.goods_type_id, sale_price, picUrl, tb_goods.state
+    tb_goods.id, goods_code,tb_goods.goods_name, tb_goods.goods_type_id, sale_price,sale_discount_price,discount_state, picUrl, tb_goods.state
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -79,6 +81,12 @@
       <if test="salePrice != null">
         sale_price,
       </if>
+      <if test="saleDiscountPrice != null">
+        sale_discount_price,
+      </if>
+      <if test="discountState != null">
+        discount_state,
+      </if>
       <if test="picurl != null">
         picUrl,
       </if>
@@ -100,7 +108,13 @@
         #{goodsTypeId,jdbcType=INTEGER},
       </if>
       <if test="salePrice != null">
-        #{salePrice,jdbcType=INTEGER},
+        #{salePrice,jdbcType=DOUBLE},
+      </if>
+      <if test="saleDiscountPrice != null">
+        #{saleDiscountPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="discountState != null">
+        #{discountState,jdbcType=INTEGER},
       </if>
       <if test="picurl != null">
         #{picurl,jdbcType=CHAR},
@@ -123,7 +137,13 @@
         goods_type_id = #{goodsTypeId,jdbcType=INTEGER},
       </if>
       <if test="salePrice != null">
-        sale_price = #{salePrice,jdbcType=INTEGER},
+        sale_price = #{salePrice,jdbcType=DOUBLE},
+      </if>
+      <if test="saleDiscountPrice != null">
+        sale_discount_price = #{saleDiscountPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="discountState != null">
+        discount_state = #{discountState,jdbcType=INTEGER},
       </if>
       <if test="picurl != null">
         picUrl = #{picurl,jdbcType=CHAR},

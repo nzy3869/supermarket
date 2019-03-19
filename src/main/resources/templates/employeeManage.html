@@ -50,6 +50,12 @@
                             <option value="0">女</option>
                         </select>
                     </div>
+                    <br/>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="lnr lnr-eye"></i></span>
+                        <input class="form-control" id="addEmployeePassword" placeholder="密码" type="password" name="employeePassword"
+                               required="required">
+                    </div>
                     <br>
                     <div class="input-group">
                         <span class="input-group-addon"><i class="lnr lnr-eye"></i></span>
@@ -67,6 +73,17 @@
                         <span class="input-group-addon"><i class="lnr lnr-envelope"></i></span>
                         <input class="form-control" id="addEmployeeAddress" placeholder="地址" type="text"
                                name="employeeAddress" required="required">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="lnr lnr-envelope"></i></span>
+                        <select class="form-control" id="addEmployeeType" placeholder="员工类型" type="text"
+                                name="employeeType" required="required">
+                            <option value="0">未分配角色</option>
+                            <option value="1">收银员</option>
+                            <option value="2">入库员</option>
+                            <option value="3">管理员</option>
+                        </select>
                     </div>
                     <br/>
                     <div class="input-group">
@@ -119,6 +136,12 @@
                     </div>
                     <br/>
                     <div class="input-group">
+                        <span class="input-group-addon"><i class="lnr lnr-user"></i></span>
+                        <input class="form-control" id="updateEmployeePassword" placeholder="员工密码" type="password"
+                               name="employeePassword">
+                    </div>
+                    <br/>
+                    <div class="input-group">
                         <span class="input-group-addon"><i class="lnr lnr-pencil"></i></span>
                         <select id="updateEmployeeSex" class="form-control">
                             <option value="1">男</option>
@@ -154,6 +177,17 @@
                         <span class="input-group-addon"><i class="lnr lnr-tablet"></i></span>
                         <input class="form-control" id="updateEmployeeQuitDate" placeholder="离职时间" type="date"
                                name="employeeQuitDate">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="lnr lnr-tablet"></i></span>
+                        <select class="form-control" id="updateEmployeeType" placeholder="员工类型" type="text"
+                                name="employeeType">
+                            <option value="0">未分配角色</option>
+                            <option value="1">收银员</option>
+                            <option value="2">入库员</option>
+                            <option value="3">管理员</option>
+                        </select>
                     </div>
                     <br/>
                 </div>
@@ -281,6 +315,37 @@
                 align: 'center',
                 halign: 'center'
             }, {
+                field: 'employeeType',
+                title: '员工类型',
+                align: 'center',
+                halign: 'center',
+                formatter:function (value, row, index) {
+                    var tmp = "";
+                    switch (value) {
+                        case 0:{
+                            tmp = "未分配角色"
+                            break;
+                        }
+                        case 1:{
+                            tmp = "收银员"
+                            break;
+                        }
+                        case 2:{
+                            tmp = "入库员"
+                            break;
+                        }
+                        case 3:{
+                            tmp = "管理员"
+                            break;
+                        }
+                        default:{
+                            tmp = "未分配角色"
+                        }
+                    }
+                    return tmp;
+
+                }
+            }, {
                 title: '操作',
                 align: 'center',
                 halign: 'center',
@@ -299,6 +364,10 @@
     $("#addEmployeeBtn").click(function () {
         if ($("#addEmployeeName").val() == "" || $("#addEmployeeName").val() == null) {
             toastr.warning("员工姓名不能为空");
+            return;
+        }
+        if ($("#addEmployeePassword").val() == "" || $("#addEmployeePassword").val() == null) {
+            toastr.warning("员工密码不能为空");
             return;
         }
         if ($("#addEmployeeAge").val() == "" || $("#addEmployeeAge").val() == null) {
@@ -324,11 +393,13 @@
             dataType: "json",
             data: {
                 employeeName: $("#addEmployeeName").val(),
+                employeePassword: $("#addEmployeePassword").val(),
                 employeeSex: $("#addEmployeeSex").val(),
                 employeeAge: $("#addEmployeeAge").val(),
                 employeeTel: $("#addEmployeeTel").val(),
                 employeeAddress: $("#addEmployeeAddress").val(),
-                employeeEntryDate: $("#addEmployeeEntryDate").val()
+                employeeEntryDate: $("#addEmployeeEntryDate").val(),
+                employeeType: $("#addEmployeeType").val()
             },
             success: function (data) {
                 if (data.result) {
@@ -347,10 +418,12 @@
      */
     function clearAddModel() {
         $("#addEmployeeName").val("");
+        $("#addEmployeePassword").val("");
         $("#addEmployeeAge").val("");
         $("#addEmployeeTel").val("");
         $("#addEmployeeAddress").val("");
         $("#addEmployeeEntryDate").val("");
+        $("#addEmployeeType").val(0);
     }
 
 
@@ -369,6 +442,7 @@
         $("#updateEmployeeAddress").val(rowObj.employeeAddress);
         $("#updateEmployeeEntryDate").val(rowObj.employeeEntryDate);
         $("#updateEmployeeQuitDate").val(rowObj.employeeQuitDate);
+        $("#updateEmployeeType").val(rowObj.employeeType);
     }
 
 
@@ -406,13 +480,15 @@
             data:{
                 id:$("#updateEmployeeId").val(),
                 employeeCode:$("#updateEmployeeCode").val(),
+                employeePassword:$("#updateEmployeePassword").val(),
                 employeeName:$("#updateEmployeeName").val(),
                 employeeSex:$("#updateEmployeeSex").val(),
                 employeeAge:$("#updateEmployeeAge").val(),
                 employeeTel:$("#updateEmployeeTel").val(),
                 employeeAddress:$("#updateEmployeeAddress").val(),
                 employeeEntryDate:$("#updateEmployeeEntryDate").val(),
-                employeeQuitDate:$("#updateEmployeeQuitDate").val()
+                employeeQuitDate:$("#updateEmployeeQuitDate").val(),
+                employeeType:$("#updateEmployeeType").val()
             },
             dataType:"json",
             success:function (data) {

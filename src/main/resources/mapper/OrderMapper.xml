@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyp.springboot.supermarket.dao.OrderMapper">
+  <resultMap id="BaseResultMap" type="com.wyp.springboot.supermarket.pojo.Order">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="order_code" jdbcType="VARCHAR" property="orderCode" />
+    <result column="goods_code" jdbcType="VARCHAR" property="goodsCode" />
+    <result column="goods_num" jdbcType="INTEGER" property="goodsNum" />
+    <result column="sale_price" jdbcType="DOUBLE" property="salePrice" />
+    <result column="real_price" jdbcType="DOUBLE" property="realPrice" />
+    <result column="is_discount" jdbcType="INTEGER" property="isDiscount" />
+    <result column="order_date" jdbcType="VARCHAR" property="orderDate" />
+    <result column="employee_code" jdbcType="VARCHAR" property="employeeCode" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, order_code, goods_code, goods_num, sale_price, real_price, is_discount, order_date, 
+    employee_code
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_order
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_order
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.wyp.springboot.supermarket.pojo.Order" useGeneratedKeys="true">
+    insert into tb_order (order_code, goods_code, goods_num, 
+      sale_price, real_price, is_discount, 
+      order_date, employee_code)
+    values (#{orderCode,jdbcType=VARCHAR}, #{goodsCode,jdbcType=VARCHAR}, #{goodsNum,jdbcType=INTEGER}, 
+      #{salePrice,jdbcType=DOUBLE}, #{realPrice,jdbcType=DOUBLE}, #{isDiscount,jdbcType=INTEGER}, 
+      #{orderDate,jdbcType=VARCHAR}, #{employeeCode,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.wyp.springboot.supermarket.pojo.Order" useGeneratedKeys="true">
+    insert into tb_order
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderCode != null">
+        order_code,
+      </if>
+      <if test="goodsCode != null">
+        goods_code,
+      </if>
+      <if test="goodsNum != null">
+        goods_num,
+      </if>
+      <if test="salePrice != null">
+        sale_price,
+      </if>
+      <if test="realPrice != null">
+        real_price,
+      </if>
+      <if test="isDiscount != null">
+        is_discount,
+      </if>
+      <if test="orderDate != null">
+        order_date,
+      </if>
+      <if test="employeeCode != null">
+        employee_code,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderCode != null">
+        #{orderCode,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsCode != null">
+        #{goodsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsNum != null">
+        #{goodsNum,jdbcType=INTEGER},
+      </if>
+      <if test="salePrice != null">
+        #{salePrice,jdbcType=DOUBLE},
+      </if>
+      <if test="realPrice != null">
+        #{realPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="isDiscount != null">
+        #{isDiscount,jdbcType=INTEGER},
+      </if>
+      <if test="orderDate != null">
+        #{orderDate,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeCode != null">
+        #{employeeCode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.wyp.springboot.supermarket.pojo.Order">
+    update tb_order
+    <set>
+      <if test="orderCode != null">
+        order_code = #{orderCode,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsCode != null">
+        goods_code = #{goodsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsNum != null">
+        goods_num = #{goodsNum,jdbcType=INTEGER},
+      </if>
+      <if test="salePrice != null">
+        sale_price = #{salePrice,jdbcType=DOUBLE},
+      </if>
+      <if test="realPrice != null">
+        real_price = #{realPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="isDiscount != null">
+        is_discount = #{isDiscount,jdbcType=INTEGER},
+      </if>
+      <if test="orderDate != null">
+        order_date = #{orderDate,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeCode != null">
+        employee_code = #{employeeCode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.wyp.springboot.supermarket.pojo.Order">
+    update tb_order
+    set order_code = #{orderCode,jdbcType=VARCHAR},
+      goods_code = #{goodsCode,jdbcType=VARCHAR},
+      goods_num = #{goodsNum,jdbcType=INTEGER},
+      sale_price = #{salePrice,jdbcType=DOUBLE},
+      real_price = #{realPrice,jdbcType=DOUBLE},
+      is_discount = #{isDiscount,jdbcType=INTEGER},
+      order_date = #{orderDate,jdbcType=VARCHAR},
+      employee_code = #{employeeCode,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+
+</mapper>

@@ -95,6 +95,7 @@ public class EmployeeController {
         if (list.size() == 0) {
             return new ResultMsg(null, Constants.REQUEST_FAIL, ResultMsg.RESULT_FAIL);
         }
+        list.forEach(employee -> employee.setEmployeePassword(null));
         return new ResultMsg(list, Constants.REQUEST_SUCCESS, ResultMsg.RESULT_SUCCESS);
     }
 

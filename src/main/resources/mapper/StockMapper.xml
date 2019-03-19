@@ -37,6 +37,13 @@
     left join tb_employee on tb_stock.employee_code = tb_employee.employee_code
     order by stock_code desc
   </select>
+  <select id="selectByGoodsCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_stock
+    where goods_code = #{goodsCode}
+    order by stock_code
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_stock
     where id = #{id,jdbcType=INTEGER}
@@ -153,5 +160,13 @@
       create_date = #{createDate,jdbcType=CHAR},
       employee_code = #{employeeCode,jdbcType=CHAR}
     where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByGoodsCodeAndStockCode" parameterType="java.util.Map">
+    update tb_stock
+    set
+      stock_margin = (stock_margin-#{goodsNum})
+
+    where goods_code = #{goodsCode}
+    and stock_code = #{stockCode}
   </update>
 </mapper>

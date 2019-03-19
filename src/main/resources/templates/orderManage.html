@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-cn"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>收银管理</title>
+    <div th:include="common/link"></div>
+</head>
+<body>
+<!-- 表格 -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3">
+                    <div class="input-group">
+                        <label>请输入商品编码</label>
+                        <input class="form-control" id="searchCode" onfocus="clearSearchCode()" placeholder="请输入商品编码" >
+                    </div>
+                </div>
+            </div>
+            <table id="orderTable"></table>
+        </div>
+    </div>
+</div>
+<!-- 工具栏 -->
+<div id="toolbar">
+    <div class="btn-group">
+        <button class="btn btn-success" data-toggle='modal' data-target='#payModal' onclick="shoppingist()">
+        付款</button>
+        <button class="btn btn-default" id="removeAllBtn" onclick="clearShoppingList()">
+            <i class="glyphicon glyphicon-trash"></i>清空列表
+        </button>
+    </div>
+</div>
+<!-- 添加模态框 -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="addModalLabel">>> 添加商品信息 <<</h4>
+            </div>
+            <div class="modal-body">
+                <!--添加商品信息表单体-->
+                <div class="panel-body">
+
+                    <div class="input-group">
+                        <span class="input-group-addon">商品编号</span>
+                        <input class="form-control" id="addGoodsCode" placeholder="商品编号" type="text"
+                               name="goodsCode" disabled="disabled">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <span class="input-group-addon">商品名称</span>
+                        <input class="form-control" id="addGoodsName" placeholder="商品名称" type="text"
+                               name="goodsName" disabled="disabled">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <span class="input-group-addon">售价</span>
+                        <input class="form-control" id="addSalePrice" placeholder="售价" type="text"
+                               name="salePrice" disabled="disabled">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <span class="input-group-addon">折扣价</span>
+                        <input class="form-control" id="addsaleDiscountPrice" placeholder="折扣价" type="text"
+                               name="salePrice" disabled="disabled">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <span class="input-group-addon">数量</span>
+                        <input class="form-control" id="addGoodsNum" placeholder="数量" type="text"
+                               name="goodsNum">
+                    </div>
+                    <br/>
+
+                </div>
+                <!--    修改信息表单体 END -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button id="addGoodsBtn" type="button" class="btn btn-primary">添加</button>
+            </div>
+        </div><!-- /.modal-content -->
+
+    </div><!-- /.modal -->
+</div>
+<!-- 编辑模态框 -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="updateModalLabel">>> 编辑商品信息 <<</h4>
+            </div>
+            <div class="modal-body">
+                <!--修改信息表单体-->
+                <div class="panel-body">
+
+                    <div class="input-group">
+                        <span class="input-group-addon">商品编号</span>
+                        <input class="form-control" id="updateGoodsCode" placeholder="商品编号" type="text"
+                               name="goodsCode" disabled>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <span class="input-group-addon">商品名称</span>
+                        <input class="form-control" id="updateGoodsName" placeholder="商品名称" type="text"
+                               name="goodsName" disabled>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <span class="input-group-addon">商品售价</span>
+                        <input class="form-control" id="updateSalePrice" placeholder="商品售价" type="text"
+                               name="salePrice" disabled>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="lnr lnr-user"></i></span>
+                        <input class="form-control" id="updateSaleDiscountPrice" placeholder="商品折扣价" type="text"
+                               name="saleDiscountPrice" disabled>
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <span class="input-group-addon">商品数量</span>
+                        <input class="form-control" id="updateGoodsNum" placeholder="数量" type="text"
+                               name="goodsNum">
+                    </div>
+
+
+                </div>
+                <!--    修改信息表单体 END -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" id="updateBtn"
+                        class="btn btn-primary" onclick="submitUpdate()">
+                    提交修改
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+
+    </div><!-- /.modal -->
+</div>
+<!-- 确认模态框 -->
+<div class="modal fade" id="cfmModel">
+    <div class="modal-dialog">
+        <div class="modal-content message_align">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+                <h4 class="modal-title">提示信息</h4>
+            </div>
+            <div class="modal-body">
+                <p>您确认要修改吗？</p>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" id="url"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button class="btn btn-primary" data-dismiss="modal">确定</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
+
+
+<div class="modal fade" id="payModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="payModalLabel">>> 购物清单 <<</h4>
+            </div>
+            <div class="modal-body">
+                <!--修改信息表单体-->
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <table class="table table-condensed" id="shopList">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>商品名</th>
+                                        <th>商品价格</th>
+                                        <th>商品数量</th>
+                                        <th>是否优惠</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!--    修改信息表单体 END -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" id="payBtn"
+                        class="btn btn-primary" onclick="pay()">
+                    确认
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+
+    </div><!-- /.modal -->
+</div>
+<script>
+    /**
+     * 表格初始化
+     */
+    $(function () {
+        $('#orderTable').bootstrapTable({
+            url: '',         //请求后台的URL（*）
+            method: 'post',                      //请求方式（*）
+            toolbar: '#toolbar',                //工具按钮用哪个容器
+            toolbarAlign: 'left',
+            //buttonsToolbar:'#toolbar',        //一个jQuery 选择器，指明自定义的 buttons toolbar。
+            striped: true,                      //是否显示行间隔色
+            cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: true,                   //是否显示分页（*）
+            sortable: false,                     //是否启用排序
+            sortOrder: "desc",                   //排序方式
+            queryParams: {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                limit: this.pageSize,   //页面大小
+                offset: this.pageNumber,  //页码
+                search: this.search
+            },//传递参数（*）
+            sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1,                       //初始化加载第一页，默认第一页
+            pageSize: 8,                       //每页的记录行数（*）
+            //sortClass:"role.id",                     //定义排序列，通过url方式获取数据填写字段名，否则填写下标。
+            pageList: [8, 10],        //可供选择的每页的行数（*）
+            search: false,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+            searchOnEnterKey: false,              //设置为 true时，按回车触发搜索方法，否则自动触发搜索方法。
+            strictSearch: false,                //设置为 true启用全匹配搜索，否则为模糊搜索。
+            searchText: null,                      //初始化搜索文字。
+            searchAlign: 'left',                 //指定 搜索框 水平方向的位置。'left' 或 'right'。
+            paginationVAlign: 'bottom',          //指定 分页条 在垂直方向的位置。'top'，'bottom' 或 'both'。
+            paginationHAlign: 'right',           //指定 分页条 在水平方向的位置。'left' 或 'right'。
+            trimOnSearch: true,                  //设置为 true 将自动去掉搜索字符的前后空格。
+            showHeader: true,                    //是否显示列头。
+            showColumns: true,                  //是否显示所有的列
+            showRefresh: true,                  //是否显示刷新按钮
+            minimumCountColumns: 0,             //最少允许的列数
+            clickToSelect: true,                //是否启用点击选中行
+            uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+            showToggle: false,                    //是否显示详细视图和列表视图的切换按钮
+            cardView: false,                    //是否显示详细视图
+            detailView: false,                   //是否显示父子表
+            dataType: 'json',                     //服务器返回的数据类型
+            columns: [{
+                field: 'goodsCode',
+                title: '商品编号',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'goodsName',
+                title: '商品名称',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'salePrice',
+                title: '售价',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'saleDiscountPrice',
+                title: '折扣价格',
+                align: 'center',
+                halign: 'center',
+                formatter:function (value, row, index) {
+                    if(row.discountState==1){
+                        return value;
+                    }else {
+                        return '无打折优惠';
+                    }
+                }
+            }, {
+                field: 'goodsNum',
+                title: '商品数量',
+                align: 'center',
+                halign: 'center'
+            }, {
+                field: 'discountState',
+                title: '是否打折',
+                align: 'center',
+                halign: 'center',
+                formatter:function (value, row, index) {
+                    return (value == 0) ? '<span class=\"label label-danger\">不打折</span>' : '<span class=\"label label-success\">打折</span>';
+                }
+            }, {
+                title: '操作',
+                align: 'center',
+                halign: 'center',
+                formatter: function (value, row, index) {
+                    var result = "<button type='button' class='btn btn-warning' data-toggle='modal' data-target='#updateModal' onclick=\"toUpdateBtn(" + JSON.stringify(row).replace(/\"/g, "'") +","+index+")\" >编辑</button>&nbsp&nbsp";
+                    result += "<button type='button' class='btn btn-danger'  onclick=\"toDelBtn(" + JSON.stringify(row).replace(/\"/g, "'") + ")\" >删除</button>&nbsp&nbsp";
+                    return result;
+                }
+            }]
+
+        });
+    });
+
+
+    /**
+     * 清空列表
+     */
+    function clearShoppingList(){
+        $('#orderTable').bootstrapTable("removeAll");
+    }
+
+    /**
+     * 清空查询框
+     */
+    function clearSearchCode(){
+        $("#searchCode").val("");
+    }
+
+    /**
+     * 绑定回车查询事件
+     */
+    $('#searchCode').bind('keypress',function(event){
+        if(event.keyCode == "13")
+        {
+            searchGoods();
+        }
+    });
+
+    //临时存储当前的商品
+    var goods = {};
+
+    /**
+     * 根据searchCode 输入框的值搜索对应的商品信息 并 回显
+     */
+    function searchGoods(){
+        goods = {};
+        //编号
+        var code = $("#searchCode").val();
+        if(code == ""||code == null){
+            toastr.warning("请输入商品编号");
+            return;
+        }
+
+        $.post("/goods/getGoodsByCode",{code:$("#searchCode").val()},function(data){
+            if(data.result){
+                $("#addGoodsCode").val(data.data.goodsCode);
+                $("#addGoodsName").val(data.data.goodsName);
+                $("#addSalePrice").val(data.data.salePrice);
+                $("#addGoodsNum").val(1);
+
+                if(data.data.discountState==1){
+                    $("#addsaleDiscountPrice").val(data.data.saleDiscountPrice);
+                }else{
+                    $("#addsaleDiscountPrice").val("无");
+                }
+                goods = data.data;
+                $("#addModal").modal("show");
+            }else {
+
+                toastr.error("商品不存在");
+            }
+        });
+
+    }
+
+
+
+
+    /**
+     * 添加商品信息
+     */
+    $("#addGoodsBtn").click(function () {
+        if ($("#addGoodsNum").val() == "" || $("#addGoodsNum").val() == null) {
+            toastr.warning("数量不能为空");
+            return;
+        }
+
+        goods.goodsNum = $("#addGoodsNum").val();
+
+        $('#orderTable').bootstrapTable('append', goods);
+        $("#addModal").modal("hide");
+
+    });
+
+    /**
+     * 打开购物清单模态框
+     */
+    function shoppingist() {
+        $("#shopList tbody").empty();
+        //获取所有的商品
+        var list =  $('#orderTable').bootstrapTable('getData');
+        //存实付金额
+        var tmp = 0;
+        //存是否优惠
+        var isDiscount = '否';
+        //总金额
+        var sum = 0;
+        console.log(list);
+        $.each(list,function (index, value) {
+            console.log(value);
+            tmp = value.salePrice;
+            if(value.discountState==1){
+                tmp = value.saleDiscountPrice;
+                isDiscount = '是';
+            }
+            sum += tmp*value.goodsNum;
+            $("#shopList").append("<tr><td>"+(index+1)+"</td><td>"+value.goodsName+"</td><td>"+tmp+"</td><td>x"+value.goodsNum+"</td><td>"+isDiscount+"</td></tr>");
+        });
+        $("#shopList").append("<tr><td colspan='5'>共计:"+sum+"</td></tr>");
+
+
+    }
+
+
+
+    //修改数量临时变量
+    var updateRow = {};
+    var pos;
+    /**
+     * 点击编辑按钮
+     * 数据回显
+     */
+    function toUpdateBtn(row,index) {
+        var rowObj = eval(row);
+        updateRow = {};
+        pos = index;
+        $("#updateGoodsName").val(rowObj.goodsName);
+        $("#updateGoodsCode").val(rowObj.goodsCode);
+        $("#updateSalePrice").val(rowObj.salePrice);
+        $("#updateSaleDiscountPrice").val(rowObj.saleDiscountPrice);
+
+        if(rowObj.discountState==1){
+            $("#updateSaleDiscountPrice").val(data.data.saleDiscountPrice);
+        }else{
+            $("#updateSaleDiscountPrice").val("无");
+        }
+
+        $("#updateGoodsNum").val(rowObj.goodsNum);
+        updateRow = rowObj;
+
+    }
+
+
+
+    /**
+     * 编辑提交
+     */
+    function submitUpdate() {
+        if ($("#updateGoodsNum").val() == "" || $("#updateGoodsNum").val() == null) {
+            toastr.warning("商品数量不能为空!");
+            return;
+        }
+
+
+        updateRow.goodsNum = $("#updateGoodsNum").val();
+        $('#orderTable').bootstrapTable('updateRow', {index: pos, row: updateRow});
+        $("#updateModal").modal("hide");
+    }
+
+
+    /**
+     * 从列表删除
+     */
+    function toDelBtn(row) {
+        var rowObj = eval(row);
+        $('#orderTable').bootstrapTable('remove', {field: 'id', values: [parseInt(row.id)]});
+    }
+
+
+    /**
+     * 下订单
+     */
+    function pay(){
+        var list = $('#orderTable').bootstrapTable('getData');
+        if(list.length<=0){
+            toastr.warning("无购物项");
+            return;
+        }
+
+        var tmp = new Array();
+        //组装需要的数据
+        $.each(list,function (index,value) {
+            //实际价格 打折价还是原价
+            if(value.discountState==1){
+                value.realPrice = value.saleDiscountPrice;
+            }else {
+                value.realPrice = value.salePrice;
+            }
+            value.id = null;
+            value.isDiscount = value.discountState;
+            tmp.push(value);
+        });
+
+        $.ajax({
+            type:"post",
+            url:"/order/addOrder",
+            contentType:"application/json",
+            data:JSON.stringify(tmp),
+            dataType:"json",
+            success:function (data) {
+                if(data.result){
+                    toastr.success(data.msg);
+                    clearShoppingList();
+                    $("#payModal").modal("hide");
+                }else {
+                    toastr.error(data.msg);
+                }
+            }
+        });
+
+    }
+</script>
+</body>
+</html>
