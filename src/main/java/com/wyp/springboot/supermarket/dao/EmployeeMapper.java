@@ -13,6 +13,8 @@ public interface EmployeeMapper {
 
     Employee selectByPrimaryKey(Integer id);
 
+    Employee selectByEmployeeCode(String employeeCode);
+
     int updateByPrimaryKeySelective(Employee record);
 
     int updateByPrimaryKey(Employee record);

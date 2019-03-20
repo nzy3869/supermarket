@@ -223,7 +223,7 @@
                         <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
                         </li>
                         <li class="divider"></li>
-                        <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        <li><a href="/logout"><i class="fa fa-sign-out fa-fw"></i> 退出登录</a>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -235,45 +235,74 @@
         <nav class="navbar-default navbar-side" role="navigation">
 		<div id="sideNav" href=""><i class="fa fa-caret-right"></i></div>
             <div class="sidebar-collapse">
-                <ul class="nav" id="main-menu">
-                    <li>
-                        <a href="#"><i class="fa fa-sitemap"></i>系统管理<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="/employeeManagePage" target="iframepage">员工管理</a>
-                            </li>
-                            <li>
-                                <a href="/goodsTypeManagePage" target="iframepage">商品类型管理</a>
-                            </li>
-                            <li>
-                                <a href="/goodsManagePage" target="iframepage">商品信息管理</a>
-                            </li>
-                            <li>
-                                <a href="/supplierManagePage" target="iframepage">供货商信息管理</a>
-                            </li>
+                <div th:if="${session.employee.employeeType} eq 3">
+                    <ul class="nav" id="main-menu">
+                        <li>
+                            <a href="#"><i class="fa fa-sitemap"></i>系统管理<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="/employeeManagePage" target="iframepage">员工管理</a>
+                                </li>
+                                <li>
+                                    <a href="/goodsTypeManagePage" target="iframepage">商品类型管理</a>
+                                </li>
+                                <li>
+                                    <a href="/goodsManagePage" target="iframepage">商品信息管理</a>
+                                </li>
+                                <li>
+                                    <a href="/supplierManagePage" target="iframepage">供货商信息管理</a>
+                                </li>
 
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-sitemap"></i>仓库管理<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="/stockManagePage" target="iframepage">入库管理</a>
-                            </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-sitemap"></i>仓库管理<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="/stockManagePage" target="iframepage">入库管理</a>
+                                </li>
 
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="#"><i class="fa fa-sitemap"></i>收银管理<span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            <li>
-                                <a href="/orderManagePage" target="iframepage">收银</a>
-                            </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-sitemap"></i>收银管理<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="/orderManagePage" target="iframepage">收银</a>
+                                </li>
 
-                        </ul>
-                    </li>
-                </ul>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
 
+                <div th:if="${session.employee.employeeType} eq 2">
+                    <ul class="nav" id="main-menu">
+                        <li>
+                            <a href="#"><i class="fa fa-sitemap"></i>仓库管理<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="/stockManagePage" target="iframepage">入库管理</a>
+                                </li>
+
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div th:if="${session.employee.employeeType} eq 1">
+                    <ul class="nav" id="main-menu">
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-sitemap"></i>收银管理<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="/orderManagePage" target="iframepage">收银</a>
+                                </li>
+
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
             </div>
 
         </nav>

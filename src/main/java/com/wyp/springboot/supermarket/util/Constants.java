@@ -17,6 +17,11 @@ public class Constants {
     public static final String REQUEST_SUCCESS = "请求成功";
     public static final String REQUEST_FAIL = "请求失败";
 
+    /**
+     * 员工在session中是key
+     */
+    public static final String EMPLOYEE_TOKEN = "employee";
+
 
 
 }

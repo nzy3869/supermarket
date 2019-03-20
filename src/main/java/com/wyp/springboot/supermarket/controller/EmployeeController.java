@@ -6,6 +6,7 @@ import com.wyp.springboot.supermarket.util.Constants;
 import com.wyp.springboot.supermarket.util.ResultMsg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.SimpleDateFormat;
@@ -98,6 +99,8 @@ public class EmployeeController {
         list.forEach(employee -> employee.setEmployeePassword(null));
         return new ResultMsg(list, Constants.REQUEST_SUCCESS, ResultMsg.RESULT_SUCCESS);
     }
+
+
 
     /**
      * 生成员工编号
